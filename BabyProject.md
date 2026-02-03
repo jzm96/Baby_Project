@@ -1,149 +1,83 @@
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 ```
 
 
 ```python
 df = pd.read_csv('precious_metals_historical_data.csv')
-df.head()
+```
+
+## Graph 1 - Precious Metal Prices Over Time
+
+
+```python
+df['Date'] = pd.to_datetime(df['Date'])
+plt.figure(figsize=(12,6))
+plt.plot(df['Date'], df['Silver_Price'], label='Silver', alpha=0.8)
+plt.plot(df['Date'], df['Gold_Price'], label='Gold', alpha=0.8)
+plt.plot(df['Date'], df['Platinum_Price'], label='Platinum', alpha=0.8)
+plt.title('Precious Metals Prices (2016-2023)')
+plt.xlabel('Date')
+plt.ylabel('Price ($)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
 ```
 
 
+    
+![png](output_3_0.png)
+    
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+### This graph shows us the price of Silver, Gold and Platinum. Beginning in 2016 through 2026.
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Date</th>
-      <th>Silver_Price</th>
-      <th>Gold_Price</th>
-      <th>Platinum_Price</th>
-      <th>Silver_Returns</th>
-      <th>Gold_Returns</th>
-      <th>Platinum_Returns</th>
-      <th>Gold_Silver_Ratio</th>
-      <th>Silver_Volatility_30d</th>
-      <th>Gold_Volatility_30d</th>
-      <th>Platinum_Volatility_30d</th>
-      <th>Silver_MA50</th>
-      <th>Silver_MA200</th>
-      <th>Gold_MA50</th>
-      <th>Gold_MA200</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2/3/2016</td>
-      <td>13.95</td>
-      <td>109.250000</td>
-      <td>84.940002</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.831541</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2/4/2016</td>
-      <td>14.17</td>
-      <td>110.570000</td>
-      <td>87.260002</td>
-      <td>0.015771</td>
-      <td>0.012082</td>
-      <td>0.027313</td>
-      <td>7.803105</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2/5/2016</td>
-      <td>14.34</td>
-      <td>112.320000</td>
-      <td>87.919998</td>
-      <td>0.011997</td>
-      <td>0.015827</td>
-      <td>0.007564</td>
-      <td>7.832636</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2/8/2016</td>
-      <td>14.59</td>
-      <td>113.830002</td>
-      <td>89.199997</td>
-      <td>0.017434</td>
-      <td>0.013444</td>
-      <td>0.014559</td>
-      <td>7.801919</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2/9/2016</td>
-      <td>14.51</td>
-      <td>113.580002</td>
-      <td>89.849998</td>
-      <td>-0.005483</td>
-      <td>-0.002196</td>
-      <td>0.007287</td>
-      <td>7.827705</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+## Graph 2 - Gold/Silver Ratio 
 
 
+```python
+plt.figure(figsize=(12,6))
+plt.plot(df['Date'], df['Gold_Silver_Ratio'])
+plt.title('Gold/Silver Ratio Over Time')
+plt.ylabel('Ratio')
+plt.grid(True, alpha=0.3)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+```
+
+
+    
+![png](output_6_0.png)
+    
+
+
+### This graph (2) shows the ratio of Gold and Silver. Beginning in 2016 through 2026.
+
+## Summary Price Table
+
+
+```python
+price_summary = df[['Silver_Price', 'Gold_Price', 'Platinum_Price']].agg(['mean', 'std', 'min', 'max']).round(2)
+price_summary['unit'] = '$/oz'
+print(price_summary)
+```
+
+          Silver_Price  Gold_Price  Platinum_Price  unit
+    mean         21.43      173.90           93.07  $/oz
+    std           9.15       64.56           18.82  $/oz
+    min          11.21      107.34           55.36  $/oz
+    max         105.60      495.90          252.25  $/oz
+    
+
+### This summary gives us the statistical information such as the mean, std, min and max of the three precious metals in dollars per ounce.
+
+## Datasets like this are very helpful for those that choose to invest in precious metals for the long term. We can also use datasets like this to predict future prices for said precious metals.
+
+#### **AI was used to help generate the graphs
 
 
 ```python
